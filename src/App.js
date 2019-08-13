@@ -4,17 +4,13 @@ import DeleteProduct from './Products/DeleteProduct.js'
 //import Offer from './Offers/offers.js'
 import sales from './sales.json';
 import './App.css';
-import { identifier } from '@babel/types';
+//import { identifier } from '@babel/types';
 
 const name = {
               '1':'Ann',
               '2':'Bob',
               '3':'C'
 };
-
-class DeleteFruit extends React.Component {
-
-}
 
 class App extends React.Component {
  
