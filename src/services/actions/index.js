@@ -1,0 +1,2 @@
+const PREVIOUS_STEP = 'PREVIOUS_STEP';
+const NEXT_STEP = 'NEXT_STEP';
