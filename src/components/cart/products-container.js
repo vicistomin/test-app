@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { applyPromoCodeRequest, getItemsRequest } from '../../services/fakeApi';
 import styles from './products-container.module.css';
 import { Product } from './product';
@@ -7,16 +7,9 @@ import { MainButton } from '../../ui/main-button/main-button';
 import { PromoButton } from '../../ui/promo-button/promo-button';
 import { Loader } from '../../ui/loader/loader';
 
-import { DiscountContext, TotalCostContext } from '../../services/appContext';
-import { PromoContext } from '../../services/productsContext';
-
 import { useSelector } from "react-redux";
 
 export const ProductsContainer = () => {
-  const { setTotalPrice } = useContext(TotalCostContext);
-  const { setDiscount } = useContext(DiscountContext);
-
-  const [promo, setPromo] = useState('');
 
   const [itemsRequest, setItemsRequest] = useState(false);
   const [promoFailed, setPromoFailed] = useState(false);
@@ -24,9 +17,11 @@ export const ProductsContainer = () => {
 
   const inputRef = useRef(null);
   
-  const items = useSelector(store => 
-   store.cart.items
-  )  
+  const { items, promoCode, discount } = useSelector(store => ({
+    items: store.cart.items,
+    promoCode: store.cart.promoCode,
+    promoDiscount: store.cart.promoDiscount
+  }));
   
   useEffect(() => {
     setItemsRequest(true);
@@ -42,15 +37,6 @@ export const ProductsContainer = () => {
       });
   }, []);
 
-  useEffect(
-    () => {
-      let total = 0;
-      items.map(item => (total += item.price * item.qty));
-      setTotalPrice(total);
-    },
-    [items, setTotalPrice]
-  );
-
   const applyPromoCode = useCallback(
     () => {
       const inputValue = inputRef.current.value;
@@ -58,15 +44,11 @@ export const ProductsContainer = () => {
       applyPromoCodeRequest(inputValue)
         .then(res => {
           if (res && res.success) {
-            setPromo(inputValue);
-            setDiscount(res.discount);
             setPromoRequest(false);
             setPromoFailed(false);
           } else {
             setPromoFailed(true);
             setPromoRequest(false);
-            setDiscount(0);
-            setPromo('');
           }
         })
         .catch(err => {
@@ -74,7 +56,7 @@ export const ProductsContainer = () => {
           setPromoRequest(false);
         });
     },
-    [setDiscount]
+    []
   );
 
   const content = useMemo(
@@ -96,41 +78,39 @@ export const ProductsContainer = () => {
         <p className={styles.text}>Произошла ошибка! Проверьте корректность введенного промокода</p>
       ) : promoRequest ? (
         ''
-      ) : promo ? (
+      ) : promoCode ? (
         <p className={styles.text}>Промокод успешно применён!</p>
       ) : (
         ''
       );
     },
-    [promoRequest, promo, promoFailed]
+    [promoRequest, promoCode, promoFailed]
   );
 
   return (
     <div className={`${styles.container}`}>
-        <PromoContext.Provider value={{ promo, setPromo }}>
-          {content}
-          <div className={styles.promo}>
-            <div className={styles.inputWithBtn}>
-              <Input
-                type="text"
-                placeholder="Введите промокод"
-                extraClass={styles.input}
-                inputWithBtn={true}
-                inputRef={inputRef}
-              />
-              <MainButton
-                type="button"
-                extraClass={styles.promo_button}
-                inputButton={true}
-                onClick={applyPromoCode}
-              >
-                {promoRequest ? <Loader size="small" inverse={true} /> : 'Применить'}
-              </MainButton>
-            </div>
-            {promo && <PromoButton extraClass={styles.promocode}>{promo}</PromoButton>}
-          </div>
-          {promoCodeStatus}
-        </PromoContext.Provider>
+      {content}
+      <div className={styles.promo}>
+        <div className={styles.inputWithBtn}>
+          <Input
+            type="text"
+            placeholder="Введите промокод"
+            extraClass={styles.input}
+            inputWithBtn={true}
+            inputRef={inputRef}
+          />
+          <MainButton
+            type="button"
+            extraClass={styles.promo_button}
+            inputButton={true}
+            onClick={applyPromoCode}
+          >
+            {promoRequest ? <Loader size="small" inverse={true} /> : 'Применить'}
+          </MainButton>
+        </div>
+        {promoCode && <PromoButton extraClass={styles.promocode}>{promoCode}</PromoButton>}
+      </div>
+      {promoCodeStatus}
     </div>
   );
 };
