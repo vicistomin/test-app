@@ -4,21 +4,29 @@ import { DeleteButton } from '../../ui/delete-button/delete-button';
 import styles from './product.module.css';
 
 import { DiscountContext, TotalCostContext } from '../../services/appContext';
-import { DataContext } from '../../services/productsContext';
+
+import { useDispatch } from "react-redux";
+
+import {
+  INCREASE_ITEM,
+  DECREASE_ITEM,
+  DELETE_ITEM
+} from '../../services/actions/cart';
 
 export const Product = ({ src, id, text, qty, price }) => {
   const { totalPrice, setTotalPrice } = useContext(TotalCostContext);
-  const { discountState } = useContext(DiscountContext);
-  const { data, setData } = useContext(DataContext);
+  const { discount } = useContext(DiscountContext);
 
-  const discountedPrice = useMemo(() => ((price - price * (discountState.discount / 100)) * qty).toFixed(0), [
-    discountState,
+  const discountedPrice = useMemo(() => ((price - price * (discount / 100)) * qty).toFixed(0), [
+    discount,
     price,
     qty
   ]);
 
+  const dispatch = useDispatch();
+  
   const onDelete = () => {
-    setData(data.filter(item => item.id !== id));
+    dispatch({type: DELETE_ITEM, id: id});
   };
 
   const decrease = () => {
@@ -26,27 +34,13 @@ export const Product = ({ src, id, text, qty, price }) => {
       onDelete();
     } else {
       setTotalPrice(totalPrice - price);
-      const newData = data.map(item => {
-        if (item.id === id) {
-          item.qty -= 1;
-          return item;
-        }
-        return item;
-      });
-      setData(newData);
+      dispatch({type: DECREASE_ITEM, id: id});
     }
   };
 
   const increase = () => {
     setTotalPrice(totalPrice + price);
-    const newData = data.map(item => {
-      if (item.id === id) {
-        item.qty += 1;
-        return item;
-      }
-      return item;
-    });
-    setData(newData);
+    dispatch({type: INCREASE_ITEM, id: id});
   };
 
   return (
@@ -59,8 +53,8 @@ export const Product = ({ src, id, text, qty, price }) => {
         <AmountButton onClick={increase}>+</AmountButton>
       </div>
       <div className={styles.price}>
-        <p className={`${styles.price} ${discountState.discount && styles.exPrice}`}>{price * qty} руб.</p>
-        {discountState.discount && <p className={styles.price}>{discountedPrice} руб.</p>}
+        <p className={`${styles.price} ${discount && styles.exPrice}`}>{price * qty} руб.</p>
+        {discount && <p className={styles.price}>{discountedPrice} руб.</p>}
       </div>
       <DeleteButton onDelete={onDelete} />
     </div>
