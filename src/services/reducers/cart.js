@@ -3,7 +3,10 @@ import {
   DECREASE_ITEM,
   DELETE_ITEM,
   CANCEL_PROMO,
-  TAB_SWITCH
+  TAB_SWITCH,
+  GET_ITEMS_REQUEST,
+  GET_ITEMS_SUCCESS,
+  GET_ITEMS_FAILED
 } from '../actions/cart';
 
 import {
@@ -12,7 +15,9 @@ import {
 } from '../initialData';
 
 export const initialState = {
-  items: items,
+  items: [],
+  itemsRequest: false,
+  itemsFailed: false,
 
   recommendedItems: recommendedItems,
 
@@ -47,7 +52,22 @@ export const cartReducer = (state = initialState, action) => {
     case DELETE_ITEM:
       return { ...state, items: [...state.items].filter(item => item.id !== action.id) };
     case CANCEL_PROMO:
-        return { ...state, promoCode: initialState.promoCode, promoDiscount: initialState.promoDiscount };
+      return { ...state, promoCode: initialState.promoCode, promoDiscount: initialState.promoDiscount };
+    case GET_ITEMS_REQUEST:
+      return { ...state, itemsRequest: true };
+    case GET_ITEMS_SUCCESS:
+      return { 
+        ...state, 
+        itemsRequest: false,
+        itemsFailed: false,
+        items: action.items
+       };
+    case GET_ITEMS_FAILED:
+      return { 
+        ...state, 
+        itemsRequest: false,
+        itemsFailed: true,
+       };
     default:
       return state
     }
