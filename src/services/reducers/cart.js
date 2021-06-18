@@ -6,23 +6,28 @@ import {
   TAB_SWITCH,
   GET_ITEMS_REQUEST,
   GET_ITEMS_SUCCESS,
-  GET_ITEMS_FAILED
+  GET_ITEMS_FAILED,
+  GET_RECOMMENDED_ITEMS_FAILED,
+  GET_RECOMMENDED_ITEMS_REQUEST,
+  GET_RECOMMENDED_ITEMS_SUCCESS,
+  APPLY_PROMO_FAILED,
+  APPLY_PROMO_REQUEST,
+  APPLY_PROMO_SUCCESS
 } from '../actions/cart';
-
-import {
-  recommendedItems,
-  items
-} from '../initialData';
 
 export const initialState = {
   items: [],
   itemsRequest: false,
   itemsFailed: false,
 
-  recommendedItems: recommendedItems,
+  recommendedItems: [],
+  recommendedItemsRequest: false,
+  recommendedItemsFailed: false,
 
   promoCode: '',
   promoDiscount: null,
+  promoRequest: false,
+  promoFailed: false,
 
   currentTab: 'items'
 };
@@ -66,8 +71,41 @@ export const cartReducer = (state = initialState, action) => {
       return { 
         ...state, 
         itemsRequest: false,
-        itemsFailed: true,
+        itemsFailed: true
        };
+    case GET_RECOMMENDED_ITEMS_REQUEST:
+      return { ...state, recommendedItemsRequest: true };
+    case GET_RECOMMENDED_ITEMS_SUCCESS:
+      return { 
+        ...state, 
+        recommendedItemsRequest: false,
+        recommendedItemsFailed: false,
+        recommendedItems: action.items
+        };
+    case GET_RECOMMENDED_ITEMS_FAILED:
+      return { 
+        ...state, 
+        recommendedItemsRequest: false,
+        recommendedItemsFailed: true
+        };
+    case APPLY_PROMO_REQUEST:
+      return { ...state, promoRequest: true };
+    case APPLY_PROMO_SUCCESS:
+      return { 
+        ...state,
+        promoCode: action.value.code,
+        promoDiscount: action.value.discount,
+        promoRequest: false,
+        promoFailed: false
+        };
+    case APPLY_PROMO_FAILED:
+      return { 
+        ...state, 
+        promoDiscount: null,
+        promoCode: '',
+        promoRequest: false,
+        promoFailed: true
+        };
     default:
       return state
     }
