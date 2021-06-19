@@ -66,7 +66,7 @@ export function getRecommendedItems() {
   }
 };
 
-export function applyPromo() {
+export function applyPromo(code) {
   return function(dispatch) {
     dispatch({
       type: APPLY_PROMO_REQUEST

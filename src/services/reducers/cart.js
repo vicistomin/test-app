@@ -15,7 +15,7 @@ import {
   APPLY_PROMO_SUCCESS
 } from '../actions/cart';
 
-export const initialState = {
+const initialState = {
   items: [],
   itemsRequest: false,
   itemsFailed: false,
@@ -39,7 +39,7 @@ export const cartReducer = (state = initialState, action) => {
         {...state, currentTab: 'postponed'}
       ) : (
         {...state, currentTab: 'items'}
-      ))
+      ));
     case INCREASE_ITEM: 
       return {
         ...state,

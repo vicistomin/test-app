@@ -1,4 +1,4 @@
-import React, { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styles from './promo-button.module.css';
 import closeIcon from '../../images/close.svg';
 import { CANCEL_PROMO } from '../../services/actions/cart';

@@ -9,13 +9,12 @@ export const TotalPrice = ({ extraClass }) => {
     ),
     discount: store.cart.promoDiscount
   }));
-
+  const price = discount ? totalPrice - totalPrice * (discount / 100) : totalPrice;
+  
   return (
     <div className={`${styles.container} ${extraClass}`}>
       <p className={styles.text}>Итого:</p>
-      <p className={styles.cost}>
-        {`${(totalPrice - totalPrice * (discount / 100)).toFixed(0)} руб.`}
-      </p>
+      <p className={styles.cost}>{`${price.toFixed(0)} руб.`}</p>
     </div>
   );
 };
