@@ -9,7 +9,7 @@ import { getRecommendedItems } from '../../services/actions/cart';
 export const Recommend = ({ extraClass }) => {
   const dispatch = useDispatch(); 
   
-  const { recommendedItems, recommendedItemsRequest } = useSelector(state => state.cart);
+  const { recommendedItems, recommendedItemsRequest } = useSelector(store => store.cart);
 
   useEffect(() => {
     dispatch(getRecommendedItems());
@@ -17,18 +17,13 @@ export const Recommend = ({ extraClass }) => {
 
   const content = useMemo(
     () => {
-      recommendedItemsRequest && !recommendedItems ? (
+      return recommendedItemsRequest ? (
         <Loader size="large" />
       ) : (
-        recommendedItems.map((item, index) => 
-          <RecommendItem 
-            key={index} 
-            src={item.src} 
-            price={item.price} 
-            text={item.text}
-          />
-        )
-      )
+        recommendedItems.map((item, index) => {
+          return <RecommendItem key={index} {...item} />;
+        })
+      );
     },
     [recommendedItemsRequest, recommendedItems]
   );

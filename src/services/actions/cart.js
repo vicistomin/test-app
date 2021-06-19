@@ -23,7 +23,7 @@ export function getItems() {
     dispatch({
       type: GET_ITEMS_REQUEST
     })
-    fetch(getItemsRequest()).then( res  => {
+    getItemsRequest().then( res  => {
       if (res && res.success) {
         dispatch({
           type: GET_ITEMS_SUCCESS,
@@ -47,7 +47,7 @@ export function getRecommendedItems() {
     dispatch({
       type: GET_RECOMMENDED_ITEMS_REQUEST
     })
-    fetch(getRecommendedItemsRequest()).then( res  => {
+    getRecommendedItemsRequest().then( res  => {
       if (res && res.success) {
         dispatch({
           type: GET_RECOMMENDED_ITEMS_SUCCESS,
@@ -71,7 +71,7 @@ export function applyPromo(code) {
     dispatch({
       type: APPLY_PROMO_REQUEST
     })
-    fetch(applyPromoCodeRequest()).then( res  => {
+    applyPromoCodeRequest().then( res  => {
       if (res && res.success) {
         dispatch({
           type: APPLY_PROMO_SUCCESS,
