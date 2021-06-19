@@ -71,11 +71,11 @@ export function applyPromo(code) {
     dispatch({
       type: APPLY_PROMO_REQUEST
     })
-    applyPromoCodeRequest().then( res  => {
+    applyPromoCodeRequest(code).then( res  => {
       if (res && res.success) {
         dispatch({
           type: APPLY_PROMO_SUCCESS,
-          value: res.code
+          value: {...res, code}
         })
       } else {
         dispatch({

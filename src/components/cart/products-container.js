@@ -24,8 +24,12 @@ export const ProductsContainer = () => {
   const dispatch = useDispatch();
 
   const applyPromoCode = useCallback(() =>{
-    dispatch(applyPromo(inputRef));
+    dispatch(applyPromo(inputRef.current.value));
   }, [dispatch, inputRef]);
+
+  useEffect(() => {
+    dispatch(getItems());
+  }, [dispatch]);
 
   const content = useMemo(
     () => {
