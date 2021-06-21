@@ -11,8 +11,8 @@ export const Tabs = () => {
 
   return (
     <div className={`${styles.tabs}`}>
-      <Tab text="Товары в корзине" value="items" active={currentTab === 'items' ? true : false} />
-      <Tab text="Товары в корзине" value="items" active={currentTab === 'postponed' ? true : false} />
+      <Tab text="Товары в корзине" active={currentTab === 'items' ? true : false} />
+      <Tab text="Отложенные товары" active={currentTab === 'postponed' ? true : false} />
     </div>
   );
 };

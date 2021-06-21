@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 import { cartReducer } from "./cart";
+import { deliveryReducer } from './delivery';
+import { checkoutReducer } from './checkout';
 
 import {
   PREVIOUS_STEP,
@@ -33,5 +35,7 @@ const stepReducer = (state = 'cart', action) => {
 
 export const rootReducer = combineReducers({
   cart: cartReducer,
-  step: stepReducer
+  step: stepReducer,
+  delivery: deliveryReducer,
+  checkout: checkoutReducer
 })
