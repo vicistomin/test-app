@@ -16,4 +16,4 @@ export const totalPriceSelector = state => {
       deliveryMethods.find(method => method.id === selectedDeliveryId).price) ||
     0;
   return deliveryPrice + items.reduce((acc, item) => acc + item.price * item.qty, 0);
-};
+}; 

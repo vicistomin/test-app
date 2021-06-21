@@ -11,13 +11,23 @@ import { useSelector } from 'react-redux';
 const title = { cart: 'Корзина', delivery: 'Доставка', checkout: 'Подтверждение заказа' };
 
 function App() {
-  const step = 'cart';
+  // const step = 'cart';
+
+  const step = useSelector(store =>
+    store.step
+  );
 
   const content = useMemo(
     () => {
       switch (step) {
         case 'cart': {
           return <Cart />;
+        }
+        case 'delivery': {
+          return <Delivery />;
+        }
+        case 'checkout': {
+          return <Checkout />;
         }
         default: {
           return <Cart />;
