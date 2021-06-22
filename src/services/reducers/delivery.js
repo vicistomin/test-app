@@ -54,8 +54,13 @@ export const deliveryReducer = (state = deliveryInitialState, action) => {
       };
     }
     case SET_DELIVERY_FORM_VALUE: {
+      const oldDeliveryForm = state.deliveryForm;
       return {
-        ...state
+        ...state,
+        deliveryForm: {
+          ...oldDeliveryForm,
+          [action.field]: action.value 
+        }
       };
     }
     default: {

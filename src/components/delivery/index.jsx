@@ -23,11 +23,19 @@ export default function SuggestInput({ onChange, value }) {
 }
 
 export const Delivery = () => {
-  const [address, setAddress] = useState('');
-
+  const dispatch = useDispatch();
+  const address = useSelector(state => state.delivery.deliveryForm.address);
   const ymaps = useRef(null);
   const placemarkRef = useRef(null);
   const mapRef = useRef(null);
+
+  const setAddress = (address) => {
+    dispatch({
+      type: SET_DELIVERY_FORM_VALUE,
+      field: 'address',
+      value: address 
+    })
+  }
 
   const getGeocodeResult = async criteria => {
     return !!ymaps.current && !!criteria ? await ymaps.current.geocode(criteria) : null;
