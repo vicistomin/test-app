@@ -17,9 +17,17 @@ export const Postponed = ({ src, id, text, qty, price }) => {
     });
   };
 
+  const [{opacity}, dragRef] = useDrag({
+    type: "postponed",
+    item: {id},
+    collect: monitor => ({
+      opacity: monitor.isDragging() ? 0.5 : 1
+    })
+  });
+
   return (
-    <div className={styles.postponed}>
-      <div className={styles.postponedBox}>
+    <div className={styles.postponed} style={{opacity}}>
+      <div className={styles.postponedBox} ref={dragRef}>
         <img className={styles.img} src={src} alt="фото товара." />
         <p className={styles.text}>{text}</p>
       </div>

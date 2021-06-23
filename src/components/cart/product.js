@@ -45,9 +45,17 @@ export const Product = ({ src, id, text, qty, price }) => {
     dispatch({type: INCREASE_ITEM, id: id});
   };
 
+  const [{opacity}, dragRef] = useDrag({
+    type: "items",
+    item: {id},
+    collect: monitor => ({
+      opacity: monitor.isDragging() ? 0.5 : 1
+    })
+  });
+
   return (
-    <div className={`${styles.product}`}>
-      <div className={styles.productBox}>
+    <div className={`${styles.product}`} style={{opacity}}>
+      <div className={styles.productBox} ref={dragRef}>
         <img className={styles.img} src={src} alt="фото товара." />
         <p className={styles.text}>{text}</p>
       </div>

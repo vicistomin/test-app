@@ -13,13 +13,15 @@ export const Cart = ( ) => {
 
   return (
     <section>
-      <Tabs />
-      {currentTab === 'items' ? (
-          <ProductsContainer />
-        ) : (
-          <PostponedContainer />
-        )
-      }
+      <DndProvider backend={HTML5Backend}>
+        <Tabs />
+        {currentTab === 'items' ? (
+            <ProductsContainer />
+          ) : (
+            <PostponedContainer />
+          )
+        }
+      </DndProvider>
     </section>
   );
 };
