@@ -17,10 +17,25 @@ export const Tab = ({ text, tabName }) => {
   const switchTab = () => {
     dispatch({ type: TAB_SWITCH });
   };
+  
+  const [{isHover}, dropTarget] = useDrop({
+    accept: tabName === 'items' ? 'postponed' : 'items',
+    drop(itemId) {
+        // onDropHandler(itemId);
+    },
+    collect: monitor => ({
+        isHover: monitor.isOver(),
+    })
+  });
+  
+  const className = `
+    ${styles.tab}
+    ${currentTab === tabName ? styles.tab_type_current : ''}
+    ${isHover ? styles.onHover : ''}
+   `;
 
-  const className = `${styles.tab} ${currentTab === tabName ? styles.tab_type_current : ''}`;
   return (
-    <div className={className} onClick={switchTab}>
+    <div className={className} onClick={switchTab} ref={dropTarget}>
       {text}
     </div>
   );
