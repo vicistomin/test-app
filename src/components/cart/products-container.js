@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { applyPromoCodeRequest, getItemsRequest } from '../../services/fakeApi';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 import styles from './products-container.module.css';
 import { Product } from './product';
 import { Input } from '../../ui/input/input';
@@ -12,14 +11,15 @@ import { useSelector, useDispatch } from "react-redux";
 export const ProductsContainer = () => {
   const inputRef = useRef(null);
   
-  const { items, promoCode, promoDiscount, promoRequest, promoFailed, itemsRequest } = useSelector(store => ({
-    items: store.cart.items,
-    promoCode: store.cart.promoCode,
-    promoDiscount: store.cart.promoDiscount,
-    promoRequest: store.cart.promoRequest,
-    promoFailed: store.cart.promoFailed,
-    itemsRequest: store.cart.itemsRequest
-  }));
+  const {
+    items,
+    postponed,
+    promoCode,
+    promoDiscount,
+    promoRequest,
+    promoFailed,
+    itemsRequest
+  } = useSelector(state => state.cart);
   
   const dispatch = useDispatch();
 
@@ -27,9 +27,12 @@ export const ProductsContainer = () => {
     dispatch(applyPromo(inputRef.current.value));
   }, [dispatch, inputRef]);
 
-  useEffect(() => {
-    dispatch(getItems());
-  }, [dispatch]);
+  useEffect(
+    () => {
+      if (!items.length && !postponed.length) dispatch(getItems());
+    },
+    [dispatch]
+  );
 
   const content = useMemo(
     () => {
@@ -50,13 +53,13 @@ export const ProductsContainer = () => {
         <p className={styles.text}>Произошла ошибка! Проверьте корректность введенного промокода</p>
       ) : promoRequest ? (
         ''
-      ) : promoCode ? (
+      ) : !!promoCode && !!promoDiscount ? (
         <p className={styles.text}>Промокод успешно применён!</p>
       ) : (
         ''
       );
     },
-    [promoRequest, promoCode, promoFailed]
+    [promoRequest, promoDiscount, promoFailed, promoCode]
   );
 
   return (
@@ -80,7 +83,9 @@ export const ProductsContainer = () => {
             {promoRequest ? <Loader size="small" inverse={true} /> : 'Применить'}
           </MainButton>
         </div>
-        {!!promoCode && !!promoDiscount && <PromoButton extraClass={styles.promocode}>{promoCode}</PromoButton>}
+        {!!promoCode && !!promoDiscount && (
+          <PromoButton extraClass={styles.promocode}>{promoCode}</PromoButton>
+        )}
       </div>
       {promoCodeStatus}
     </div>

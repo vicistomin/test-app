@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { YMaps, Map } from 'react-yandex-maps';
 import { InputsBox } from './inputs-box';
 import styles from './delivery.module.css';

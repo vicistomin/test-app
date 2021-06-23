@@ -18,6 +18,9 @@ export const APPLY_PROMO_FAILED = 'APPLY_PROMO_FAILED';
 export const APPLY_PROMO_REQUEST = 'APPLY_PROMO_REQUEST';
 export const APPLY_PROMO_SUCCESS = 'APPLY_PROMO_SUCCESS';
 
+export const ADD_POSTPONED_ITEM = 'ADD_POSTPONED_ITEM';
+export const DELETE_POSTPONED_ITEM = 'DELETE_POSTPONED_ITEM';
+
 export function getItems() {
   return function(dispatch) {
     dispatch({

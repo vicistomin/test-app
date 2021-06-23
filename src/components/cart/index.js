@@ -1,9 +1,10 @@
 import React from 'react';
 import { Tabs } from './tabs';
 import { ProductsContainer } from './products-container';
-import { Postponed } from './postponed';
-
+import { PostponedContainer } from './postponed-container';
 import { useSelector } from "react-redux";
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 
 export const Cart = ( ) => {
   const currentTab = useSelector(store => 
@@ -16,7 +17,7 @@ export const Cart = ( ) => {
       {currentTab === 'items' ? (
           <ProductsContainer />
         ) : (
-          <Postponed />
+          <PostponedContainer />
         )
       }
     </section>

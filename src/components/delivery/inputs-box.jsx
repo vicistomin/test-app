@@ -5,9 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { SET_DELIVERY_FORM_VALUE } from "../../services/actions/delivery";
 
 export const InputsBox = () => {
-  const deliveryForm = useSelector(state => 
-    state.delivery.deliveryForm
-  );
+  const { deliveryForm } = useSelector(state => state.delivery);
 
   const dispatch = useDispatch();
 

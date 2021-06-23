@@ -54,11 +54,10 @@ export const deliveryReducer = (state = deliveryInitialState, action) => {
       };
     }
     case SET_DELIVERY_FORM_VALUE: {
-      const oldDeliveryForm = state.deliveryForm;
       return {
         ...state,
         deliveryForm: {
-          ...oldDeliveryForm,
+          ...state.deliveryForm,
           [action.field]: action.value 
         }
       };

@@ -12,10 +12,15 @@ import {
   GET_RECOMMENDED_ITEMS_SUCCESS,
   APPLY_PROMO_FAILED,
   APPLY_PROMO_REQUEST,
-  APPLY_PROMO_SUCCESS
+  APPLY_PROMO_SUCCESS,
+  ADD_POSTPONED_ITEM,
+  DELETE_POSTPONED_ITEM
 } from '../actions/cart';
 
 const initialState = {
+  featured: [],
+  postponed: [],
+
   items: [],
   itemsRequest: false,
   itemsFailed: false,
@@ -23,6 +28,8 @@ const initialState = {
   recommendedItems: [],
   recommendedItemsRequest: false,
   recommendedItemsFailed: false,
+
+  postponedItems: [],
 
   promoCode: '',
   promoDiscount: null,
@@ -106,6 +113,19 @@ export const cartReducer = (state = initialState, action) => {
         promoRequest: false,
         promoFailed: true
         };
+    case ADD_POSTPONED_ITEM:
+      return {
+        ...state,
+        postponed: [
+          ...state.postponed,
+          ...state.items.filter(item => item.id === action.id)
+        ]
+      };
+    case DELETE_POSTPONED_ITEM:
+      return { 
+        ...state, 
+        postponed: [...state.postponed].filter(item => item.id !== action.id) 
+      };
     default:
       return state
     }
