@@ -21,13 +21,27 @@ export const Tab = ({ text, tabName }) => {
   const [{isHover}, dropTarget] = useDrop({
     accept: tabName === 'items' ? 'postponed' : 'items',
     drop(itemId) {
-        // onDropHandler(itemId);
+      currentTab === 'items' ? (
+        moveItem(itemId)
+      ) : (
+        movePostponedItem(itemId)
+      )
     },
     collect: monitor => ({
         isHover: monitor.isOver(),
     })
   });
   
+  const movePostponedItem = (item) => {
+    dispatch({ type: ADD_ITEM, id: item.id });
+    dispatch({ type: DELETE_POSTPONED_ITEM, id: item.id });
+  }
+  
+  const moveItem = (item) => {
+    dispatch({ type: ADD_POSTPONED_ITEM, id: item.id });
+    dispatch({ type: DELETE_ITEM, id: item.id });
+  }
+
   const className = `
     ${styles.tab}
     ${currentTab === tabName ? styles.tab_type_current : ''}
